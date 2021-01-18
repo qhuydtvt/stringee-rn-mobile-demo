@@ -1,0 +1,5 @@
+rootProject.name = 'DemoPhoneCall'
+apply from: file("../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesSettingsGradle(settings)
+include ':app'
+include ':stringee-react-native'
+project(':stringee-react-native').projectDir = new File(rootProject.projectDir, '../node_modules/stringee-react-native/android')
