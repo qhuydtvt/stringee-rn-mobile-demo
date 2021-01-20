@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   StatusBar,
   Platform,
+  PermissionsAndroid,
 } from 'react-native';
 
 import {StringeeCall, StringeeClient} from 'stringee-react-native';
@@ -111,6 +112,7 @@ class App extends React.Component {
 
   async componentDidMount() {
     try {
+      await this._requestAndroidPermission();
       const url =
         Platform.OS === 'ios'
           ? 'http://localhost:8000/token'
@@ -214,6 +216,25 @@ class App extends React.Component {
         }
       },
     );
+  }
+
+  async _requestAndroidPermission() {
+    try {
+      if (Platform.OS === 'ios') return;
+      const granted = await PermissionsAndroid.requestMultiple([
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+        PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
+        PermissionsAndroid.PERMISSIONS.CALL_PHONE,
+      ]);
+
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        return console.log('Permission granted');
+      }
+
+      return console.log('Permission denied');
+    } catch (error) {
+      console.warn(error);
+    }
   }
 
   render() {
